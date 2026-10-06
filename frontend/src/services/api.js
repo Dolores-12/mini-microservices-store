@@ -7,7 +7,6 @@ async function apiRequest(endpoint, options = {}) {
     ...options.headers,
   };
 
-  // Only set JSON content type when we are not sending FormData.
   if (!(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
@@ -21,7 +20,7 @@ async function apiRequest(endpoint, options = {}) {
     headers,
   });
 
-  let data = null;
+  let data;
 
   try {
     data = await response.json();
