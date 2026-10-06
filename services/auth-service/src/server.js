@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const connectDatabase = require("./config/database");
 const authRoutes = require("./routes/authRoute");
 
 const app = express();
@@ -20,6 +21,17 @@ app.get("/health", (req, res) => {
 
 app.use("/auth", authRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Auth service running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDatabase();
+
+    app.listen(PORT, () => {
+      console.log(`Auth service running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Auth service failed to start:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
