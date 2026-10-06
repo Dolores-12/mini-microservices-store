@@ -1,0 +1,12 @@
+{
+  "name": "mini-microservices-store",
+  "version": "1.0.0",
+  "description": "Mini Microservices Store",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm --prefix services/auth-service run dev\" \"npm --prefix services/catalog-service run dev\" \"npm --prefix services/order-service run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
