@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const connectDatabase = require("./config/database");
 const productRoutes = require("./routes/productRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const inventoryRoutes = require("./routes/inventoryRoute");
@@ -24,6 +25,17 @@ app.use("/products", productRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/inventory", inventoryRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Catalog service running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDatabase();
+
+    app.listen(PORT, () => {
+      console.log(`Catalog service running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Catalog service failed to start:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
