@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
 
+// =====================================================
+// CATEGORIES
+// =====================================================
+
 const categories = [
   {
     name: "Electronics",
@@ -40,63 +44,413 @@ const categories = [
   },
 ];
 
+// =====================================================
+// CATEGORY IMAGES
+// =====================================================
+
+const categoryImages = {
+  Electronics: {
+    url: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/electronics",
+  },
+
+  Smartphones: {
+    url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/smartphones",
+  },
+
+  Laptops: {
+    url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/laptops",
+  },
+
+  "Home & Living": {
+    url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/home-living",
+  },
+
+  Fashion: {
+    url: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/fashion",
+  },
+
+  Beauty: {
+    url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/beauty",
+  },
+
+  Kitchen: {
+    url: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/kitchen",
+  },
+
+  Gaming: {
+    url: "https://images.unsplash.com/photo-1592840496694-26c035b52b7f?auto=format&fit=crop&w=800&q=80",
+    publicId: "seed/gaming",
+  },
+};
+
+// =====================================================
+// PRODUCTS
+// =====================================================
+
 const products = [
-  // Smartphones - 6
-  ["iPhone 15", "Apple smartphone with 128GB storage", 850000, 25, "Smartphones"],
-  ["Samsung Galaxy S24", "Premium Samsung Android smartphone", 780000, 20, "Smartphones"],
-  ["Google Pixel 8", "Google smartphone with advanced camera", 650000, 18, "Smartphones"],
-  ["OnePlus 12", "High-performance Android smartphone", 620000, 15, "Smartphones"],
-  ["Xiaomi Redmi Note 13", "Affordable smartphone with AMOLED display", 280000, 30, "Smartphones"],
-  ["Tecno Camon 30", "Tecno smartphone with high-resolution camera", 310000, 28, "Smartphones"],
+  // ===================================================
+  // SMARTPHONES - 6
+  // ===================================================
 
-  // Laptops - 5
-  ["MacBook Air M3", "Apple laptop powered by the M3 chip", 1450000, 10, "Laptops"],
-  ["Dell XPS 15", "Premium Dell productivity laptop", 1350000, 12, "Laptops"],
-  ["HP Pavilion 15", "Reliable laptop for work and study", 720000, 20, "Laptops"],
-  ["Lenovo ThinkPad E14", "Business laptop with durable design", 680000, 15, "Laptops"],
-  ["ASUS VivoBook 15", "Affordable laptop for everyday computing", 590000, 18, "Laptops"],
+  {
+    name: "iPhone 15",
+    description: "Apple smartphone with 128GB storage",
+    price: 850000,
+    stock: 25,
+    category: "Smartphones",
+  },
 
-  // Electronics - 6
-  ["Sony WH-1000XM5", "Wireless noise-cancelling headphones", 520000, 14, "Electronics"],
-  ["JBL Flip 6", "Portable Bluetooth speaker", 180000, 25, "Electronics"],
-  ["Apple AirPods Pro", "Wireless earbuds with active noise cancellation", 390000, 20, "Electronics"],
-  ["Anker Power Bank", "20000mAh portable power bank", 75000, 40, "Electronics"],
-  ["Samsung 55-inch Smart TV", "4K smart television", 850000, 8, "Electronics"],
-  ["Amazon Echo Dot", "Smart speaker with voice assistant", 95000, 22, "Electronics"],
+  {
+    name: "Samsung Galaxy S24",
+    description: "Premium Samsung Android smartphone",
+    price: 780000,
+    stock: 20,
+    category: "Smartphones",
+  },
 
-  // Home & Living - 6
-  ["Modern Office Chair", "Ergonomic office chair for comfortable work", 185000, 15, "Home & Living"],
-  ["LED Floor Lamp", "Modern adjustable LED floor lamp", 65000, 25, "Home & Living"],
-  ["Memory Foam Pillow", "Comfortable memory foam sleeping pillow", 35000, 35, "Home & Living"],
-  ["Queen Size Bedsheet", "Premium cotton queen-size bedsheet", 55000, 30, "Home & Living"],
-  ["Decorative Wall Mirror", "Modern decorative wall mirror", 85000, 12, "Home & Living"],
-  ["Three-Seater Sofa", "Comfortable modern living room sofa", 650000, 6, "Home & Living"],
+  {
+    name: "Google Pixel 8",
+    description: "Google smartphone with advanced camera",
+    price: 650000,
+    stock: 18,
+    category: "Smartphones",
+  },
 
-  // Fashion - 5
-  ["Classic Denim Jacket", "Unisex blue denim jacket", 75000, 20, "Fashion"],
-  ["Men's Casual Sneakers", "Comfortable everyday sneakers", 85000, 25, "Fashion"],
-  ["Women's Handbag", "Elegant everyday leather handbag", 95000, 18, "Fashion"],
-  ["Classic Wristwatch", "Stylish analog wristwatch", 120000, 12, "Fashion"],
-  ["Premium Sunglasses", "UV-protection fashion sunglasses", 45000, 30, "Fashion"],
+  {
+    name: "OnePlus 12",
+    description: "High-performance Android smartphone",
+    price: 620000,
+    stock: 15,
+    category: "Smartphones",
+  },
 
-  // Beauty - 4
-  ["Facial Cleanser", "Gentle daily facial cleanser", 18000, 40, "Beauty"],
-  ["Vitamin C Serum", "Brightening vitamin C facial serum", 25000, 35, "Beauty"],
-  ["Moisturizing Body Lotion", "Hydrating body lotion for daily use", 15000, 45, "Beauty"],
-  ["Perfume Eau de Parfum", "Long-lasting premium fragrance", 65000, 20, "Beauty"],
+  {
+    name: "Xiaomi Redmi Note 13",
+    description: "Affordable smartphone with AMOLED display",
+    price: 280000,
+    stock: 30,
+    category: "Smartphones",
+  },
 
-  // Kitchen - 4
-  ["Air Fryer", "Digital air fryer for healthier cooking", 145000, 15, "Kitchen"],
-  ["Electric Kettle", "Fast-boiling stainless steel kettle", 45000, 30, "Kitchen"],
-  ["Blender", "High-power kitchen blender", 85000, 20, "Kitchen"],
-  ["Rice Cooker", "Automatic electric rice cooker", 65000, 18, "Kitchen"],
+  {
+    name: "Tecno Camon 30",
+    description: "Tecno smartphone with high-resolution camera",
+    price: 310000,
+    stock: 28,
+    category: "Smartphones",
+  },
 
-  // Gaming - 4
-  ["PlayStation 5", "Sony next-generation gaming console", 950000, 8, "Gaming"],
-  ["Xbox Series X", "Microsoft high-performance gaming console", 850000, 7, "Gaming"],
-  ["Gaming Headset", "Immersive headset for gaming", 95000, 20, "Gaming"],
-  ["Wireless Gaming Controller", "Wireless controller for console gaming", 85000, 22, "Gaming"],
+  // ===================================================
+  // LAPTOPS - 5
+  // ===================================================
+
+  {
+    name: "MacBook Air M3",
+    description: "Apple laptop powered by the M3 chip",
+    price: 1450000,
+    stock: 10,
+    category: "Laptops",
+  },
+
+  {
+    name: "Dell XPS 15",
+    description: "Premium Dell productivity laptop",
+    price: 1350000,
+    stock: 12,
+    category: "Laptops",
+  },
+
+  {
+    name: "HP Pavilion 15",
+    description: "Reliable laptop for work and study",
+    price: 720000,
+    stock: 20,
+    category: "Laptops",
+  },
+
+  {
+    name: "Lenovo ThinkPad E14",
+    description: "Business laptop with durable design",
+    price: 680000,
+    stock: 15,
+    category: "Laptops",
+  },
+
+  {
+    name: "ASUS VivoBook 15",
+    description: "Affordable laptop for everyday computing",
+    price: 590000,
+    stock: 18,
+    category: "Laptops",
+  },
+
+  // ===================================================
+  // ELECTRONICS - 6
+  // ===================================================
+
+  {
+    name: "Sony WH-1000XM5",
+    description: "Wireless noise-cancelling headphones",
+    price: 520000,
+    stock: 14,
+    category: "Electronics",
+  },
+
+  {
+    name: "JBL Flip 6",
+    description: "Portable Bluetooth speaker",
+    price: 180000,
+    stock: 25,
+    category: "Electronics",
+  },
+
+  {
+    name: "Apple AirPods Pro",
+    description: "Wireless earbuds with active noise cancellation",
+    price: 390000,
+    stock: 20,
+    category: "Electronics",
+  },
+
+  {
+    name: "Anker Power Bank",
+    description: "20000mAh portable power bank",
+    price: 75000,
+    stock: 40,
+    category: "Electronics",
+  },
+
+  {
+    name: "Samsung 55-inch Smart TV",
+    description: "4K smart television",
+    price: 850000,
+    stock: 8,
+    category: "Electronics",
+  },
+
+  {
+    name: "Amazon Echo Dot",
+    description: "Smart speaker with voice assistant",
+    price: 95000,
+    stock: 22,
+    category: "Electronics",
+  },
+
+  // ===================================================
+  // HOME & LIVING - 6
+  // ===================================================
+
+  {
+    name: "Modern Office Chair",
+    description: "Ergonomic office chair for comfortable work",
+    price: 185000,
+    stock: 15,
+    category: "Home & Living",
+  },
+
+  {
+    name: "LED Floor Lamp",
+    description: "Modern adjustable LED floor lamp",
+    price: 65000,
+    stock: 25,
+    category: "Home & Living",
+  },
+
+  {
+    name: "Memory Foam Pillow",
+    description: "Comfortable memory foam sleeping pillow",
+    price: 35000,
+    stock: 35,
+    category: "Home & Living",
+  },
+
+  {
+    name: "Queen Size Bedsheet",
+    description: "Premium cotton queen-size bedsheet",
+    price: 55000,
+    stock: 30,
+    category: "Home & Living",
+  },
+
+  {
+    name: "Decorative Wall Mirror",
+    description: "Modern decorative wall mirror",
+    price: 85000,
+    stock: 12,
+    category: "Home & Living",
+  },
+
+  {
+    name: "Three-Seater Sofa",
+    description: "Comfortable modern living room sofa",
+    price: 650000,
+    stock: 6,
+    category: "Home & Living",
+  },
+
+  // ===================================================
+  // FASHION - 5
+  // ===================================================
+
+  {
+    name: "Classic Denim Jacket",
+    description: "Unisex blue denim jacket",
+    price: 75000,
+    stock: 20,
+    category: "Fashion",
+  },
+
+  {
+    name: "Men's Casual Sneakers",
+    description: "Comfortable everyday sneakers",
+    price: 85000,
+    stock: 25,
+    category: "Fashion",
+  },
+
+  {
+    name: "Women's Handbag",
+    description: "Elegant everyday leather handbag",
+    price: 95000,
+    stock: 18,
+    category: "Fashion",
+  },
+
+  {
+    name: "Classic Wristwatch",
+    description: "Stylish analog wristwatch",
+    price: 120000,
+    stock: 12,
+    category: "Fashion",
+  },
+
+  {
+    name: "Premium Sunglasses",
+    description: "UV-protection fashion sunglasses",
+    price: 45000,
+    stock: 30,
+    category: "Fashion",
+  },
+
+  // ===================================================
+  // BEAUTY - 4
+  // ===================================================
+
+  {
+    name: "Facial Cleanser",
+    description: "Gentle daily facial cleanser",
+    price: 18000,
+    stock: 40,
+    category: "Beauty",
+  },
+
+  {
+    name: "Vitamin C Serum",
+    description: "Brightening vitamin C facial serum",
+    price: 25000,
+    stock: 35,
+    category: "Beauty",
+  },
+
+  {
+    name: "Moisturizing Body Lotion",
+    description: "Hydrating body lotion for daily use",
+    price: 15000,
+    stock: 45,
+    category: "Beauty",
+  },
+
+  {
+    name: "Perfume Eau de Parfum",
+    description: "Long-lasting premium fragrance",
+    price: 65000,
+    stock: 20,
+    category: "Beauty",
+  },
+
+  // ===================================================
+  // KITCHEN - 4
+  // ===================================================
+
+  {
+    name: "Air Fryer",
+    description: "Digital air fryer for healthier cooking",
+    price: 145000,
+    stock: 15,
+    category: "Kitchen",
+  },
+
+  {
+    name: "Electric Kettle",
+    description: "Fast-boiling stainless steel kettle",
+    price: 45000,
+    stock: 30,
+    category: "Kitchen",
+  },
+
+  {
+    name: "Blender",
+    description: "High-power kitchen blender",
+    price: 85000,
+    stock: 20,
+    category: "Kitchen",
+  },
+
+  {
+    name: "Rice Cooker",
+    description: "Automatic electric rice cooker",
+    price: 65000,
+    stock: 18,
+    category: "Kitchen",
+  },
+
+  // ===================================================
+  // GAMING - 4
+  // ===================================================
+
+  {
+    name: "PlayStation 5",
+    description: "Sony next-generation gaming console",
+    price: 950000,
+    stock: 8,
+    category: "Gaming",
+  },
+
+  {
+    name: "Xbox Series X",
+    description: "Microsoft high-performance gaming console",
+    price: 850000,
+    stock: 7,
+    category: "Gaming",
+  },
+
+  {
+    name: "Gaming Headset",
+    description: "Immersive headset for gaming",
+    price: 95000,
+    stock: 20,
+    category: "Gaming",
+  },
+
+  {
+    name: "Wireless Gaming Controller",
+    description: "Wireless controller for console gaming",
+    price: 85000,
+    stock: 22,
+    category: "Gaming",
+  },
 ];
+
+// =====================================================
+// SEED FUNCTION
+// =====================================================
 
 async function seed() {
   try {
@@ -111,6 +465,10 @@ async function seed() {
     await mongoose.connect(mongoUri);
 
     console.log("Connected to MongoDB");
+
+    // ---------------------------------------------------
+    // CREATE / UPDATE CATEGORIES
+    // ---------------------------------------------------
 
     const categoryMap = {};
 
@@ -133,22 +491,43 @@ async function seed() {
 
     console.log(`${categories.length} categories ready`);
 
-    for (const [
-      name,
-      description,
-      price,
-      stock,
-      categoryName,
-    ] of products) {
+    // ---------------------------------------------------
+    // CREATE / UPDATE PRODUCTS
+    // ---------------------------------------------------
+
+    for (const product of products) {
+      const categoryId = categoryMap[product.category];
+
+      const image = categoryImages[product.category];
+
+      if (!categoryId) {
+        throw new Error(
+          `Category not found for product: ${product.name}`
+        );
+      }
+
+      if (!image) {
+        throw new Error(
+          `Image configuration not found for category: ${product.category}`
+        );
+      }
+
       await Product.findOneAndUpdate(
-        { name },
+        { name: product.name },
         {
-          name,
-          description,
-          price,
-          stock,
-          category: categoryMap[categoryName],
-          images: [],
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          category: categoryId,
+
+          images: [
+            {
+              url: image.url,
+              publicId: image.publicId,
+            },
+          ],
+
           isActive: true,
         },
         {
