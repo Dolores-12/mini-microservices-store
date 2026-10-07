@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
-import { getProducts } from "../services/catalogService";
+import {
+  getProducts,
+  getCategories,
+} from "../services/catalogService";
 
 function Catalog() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -14,10 +18,50 @@ function Catalog() {
 
   const [cartMessage, setCartMessage] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedCategory = searchParams.get("category") || "";
+
+  // ==========================================
+  // LOAD CATEGORIES
+  // ==========================================
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const response = await getCategories();
+
+        const categoryList = Array.isArray(response)
+          ? response
+          : response?.categories ||
+            response?.data?.categories ||
+            response?.data ||
+            [];
+
+        setCategories(categoryList);
+      } catch (err) {
+        console.error("Unable to load categories:", err);
+      }
+    }
+
+    loadCategories();
+  }, []);
+
+  // ==========================================
+  // LOAD PRODUCTS
+  // ==========================================
+
   useEffect(() => {
     async function loadProducts() {
       try {
-        const response = await getProducts();
+        setLoading(true);
+        setError("");
+
+        const query = selectedCategory
+          ? `category=${encodeURIComponent(selectedCategory)}`
+          : "";
+
+        const response = await getProducts(query);
 
         const productList = Array.isArray(response)
           ? response
@@ -35,7 +79,11 @@ function Catalog() {
     }
 
     loadProducts();
-  }, []);
+  }, [selectedCategory]);
+
+  // ==========================================
+  // FILTER + SORT
+  // ==========================================
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -71,6 +119,24 @@ function Catalog() {
 
     return result;
   }, [products, searchTerm, sortBy]);
+
+  // ==========================================
+  // CATEGORY CLICK
+  // ==========================================
+
+  const handleCategoryChange = (categoryId) => {
+    if (categoryId) {
+      setSearchParams({ category: categoryId });
+    } else {
+      setSearchParams({});
+    }
+
+    setSearchTerm("");
+  };
+
+  // ==========================================
+  // ADD TO CART
+  // ==========================================
 
   const addToCart = (product) => {
     const savedCart = localStorage.getItem("store_cart");
@@ -114,6 +180,10 @@ function Catalog() {
     }, 2500);
   };
 
+  // ==========================================
+  // LOADING
+  // ==========================================
+
   if (loading) {
     return (
       <main>
@@ -124,6 +194,10 @@ function Catalog() {
       </main>
     );
   }
+
+  // ==========================================
+  // ERROR
+  // ==========================================
 
   if (error) {
     return (
@@ -147,9 +221,15 @@ function Catalog() {
     );
   }
 
+  // ==========================================
+  // PAGE
+  // ==========================================
+
   return (
     <main className="catalog-page">
-      {/* Page heading */}
+
+      {/* PAGE HEADER */}
+
       <section className="catalog-header">
         <div>
           <span className="section-kicker">DISCOVER</span>
@@ -167,8 +247,41 @@ function Catalog() {
         </div>
       </section>
 
-      {/* Search / filter */}
+      {/* CATEGORY BUTTONS */}
+
+      <section className="catalog-categories">
+
+        <button
+          type="button"
+          className={!selectedCategory ? "active" : ""}
+          onClick={() => handleCategoryChange("")}
+        >
+          All Products
+        </button>
+
+        {categories.map((category) => (
+          <button
+            key={category._id}
+            type="button"
+            className={
+              selectedCategory === category._id
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              handleCategoryChange(category._id)
+            }
+          >
+            {category.name}
+          </button>
+        ))}
+
+      </section>
+
+      {/* SEARCH / SORT */}
+
       <section className="catalog-toolbar">
+
         <div className="catalog-search">
           <span>🔎</span>
 
@@ -203,54 +316,81 @@ function Catalog() {
             }
           >
             <option value="featured">Featured</option>
+
             <option value="price-low">
               Price: Low to High
             </option>
+
             <option value="price-high">
               Price: High to Low
             </option>
-            <option value="name">Name</option>
+
+            <option value="name">
+              Name
+            </option>
           </select>
         </div>
+
       </section>
 
-      {/* Cart notification */}
+      {/* CART MESSAGE */}
+
       {cartMessage && (
         <div className="cart-toast">
           <span>✓</span>
 
           <p>{cartMessage}</p>
 
-          <Link to="/cart">View Cart →</Link>
+          <Link to="/cart">
+            View Cart →
+          </Link>
         </div>
       )}
 
-      {/* Results */}
+      {/* PRODUCTS */}
+
       {filteredProducts.length === 0 ? (
+
         <div className="catalog-empty">
+
           <div>🔎</div>
 
           <h2>No products found</h2>
 
           <p>
-            Try a different search term or clear your search.
+            Try a different search term or category.
           </p>
 
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => setSearchTerm("")}
+            onClick={() => {
+              setSearchTerm("");
+              handleCategoryChange("");
+            }}
           >
             View All Products
           </button>
+
         </div>
+
       ) : (
+
         <section className="catalog-grid">
+
           {filteredProducts.map((product) => {
+
+            // IMPORTANT:
+            // Product.images[0] is an object:
+            // { url, publicId }
+            //
+            // We need the URL.
+
             const image =
+              product.images?.[0]?.url ||
               product.image ||
               product.imageUrl ||
-              product.images?.[0];
+              "";
 
             const stock =
               product.stock ??
@@ -259,23 +399,37 @@ function Catalog() {
               null;
 
             return (
+
               <article
                 className="store-product-card"
                 key={product._id}
               >
+
+                {/* PRODUCT IMAGE */}
+
                 <Link
                   to={`/catalog/${product._id}`}
                   className="store-product-image"
                 >
+
                   {image ? (
+
                     <img
                       src={image}
                       alt={product.name}
+                      loading="lazy"
+                      onError={(event) => {
+                        event.currentTarget.style.display =
+                          "none";
+                      }}
                     />
+
                   ) : (
+
                     <div className="product-placeholder">
                       🛍️
                     </div>
+
                   )}
 
                   <span className="product-deal-badge">
@@ -293,9 +447,13 @@ function Catalog() {
                   >
                     ♡
                   </button>
+
                 </Link>
 
+                {/* PRODUCT INFORMATION */}
+
                 <div className="store-product-info">
+
                   <Link
                     to={`/catalog/${product._id}`}
                     className="store-product-name"
@@ -306,9 +464,7 @@ function Catalog() {
                   <div className="product-rating">
                     <span>★</span>
                     <span>4.8</span>
-                    <small>
-                      (128)
-                    </small>
+                    <small>(128)</small>
                   </div>
 
                   <p className="store-product-description">
@@ -317,8 +473,12 @@ function Catalog() {
                   </p>
 
                   <div className="store-product-pricing">
+
                     <strong>
-                      ₦{Number(product.price || 0).toLocaleString()}
+                      ₦
+                      {Number(
+                        product.price || 0
+                      ).toLocaleString()}
                     </strong>
 
                     <span className="old-price">
@@ -331,37 +491,57 @@ function Catalog() {
                     <span className="discount-badge">
                       -20%
                     </span>
+
                   </div>
 
                   {stock !== null && (
+
                     <div className="stock-status">
+
                       {Number(stock) > 0 ? (
+
                         <>
                           <span className="stock-dot"></span>
                           {Number(stock)} left
                         </>
+
                       ) : (
+
                         <span className="out-of-stock">
                           Out of stock
                         </span>
+
                       )}
+
                     </div>
+
                   )}
 
                   <button
                     type="button"
                     className="add-cart-button"
-                    disabled={stock !== null && Number(stock) <= 0}
-                    onClick={() => addToCart(product)}
+                    disabled={
+                      stock !== null &&
+                      Number(stock) <= 0
+                    }
+                    onClick={() =>
+                      addToCart(product)
+                    }
                   >
                     🛒 Add to Cart
                   </button>
+
                 </div>
+
               </article>
+
             );
           })}
+
         </section>
+
       )}
+
     </main>
   );
 }

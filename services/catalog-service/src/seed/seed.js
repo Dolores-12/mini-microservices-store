@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../../.env"),
+});
 
 const mongoose = require("mongoose");
 
@@ -43,52 +45,6 @@ const categories = [
     description: "Gaming consoles and accessories",
   },
 ];
-
-// =====================================================
-// CATEGORY IMAGES
-// =====================================================
-
-const categoryImages = {
-  Electronics: {
-    url: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/electronics",
-  },
-
-  Smartphones: {
-    url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/smartphones",
-  },
-
-  Laptops: {
-    url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/laptops",
-  },
-
-  "Home & Living": {
-    url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/home-living",
-  },
-
-  Fashion: {
-    url: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/fashion",
-  },
-
-  Beauty: {
-    url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/beauty",
-  },
-
-  Kitchen: {
-    url: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/kitchen",
-  },
-
-  Gaming: {
-    url: "https://images.unsplash.com/photo-1592840496694-26c035b52b7f?auto=format&fit=crop&w=800&q=80",
-    publicId: "seed/gaming",
-  },
-};
 
 // =====================================================
 // PRODUCTS
@@ -449,6 +405,253 @@ const products = [
 ];
 
 // =====================================================
+// PRODUCT IMAGES
+// =====================================================
+
+const productImages = {
+  "iPhone 15": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337972/mini-microservices-store/products/pexels-a-darmel-7862350.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-a-darmel-7862350",
+  },
+
+  "Samsung Galaxy S24": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337973/mini-microservices-store/products/pexels-a-darmel-7862390.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-a-darmel-7862390",
+  },
+
+  "Google Pixel 8": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337974/mini-microservices-store/products/pexels-airamdphoto-15940010.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-airamdphoto-15940010",
+  },
+
+  "OnePlus 12": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337976/mini-microservices-store/products/pexels-brunxs-20388126.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-brunxs-20388126",
+  },
+
+  "Xiaomi Redmi Note 13": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337977/mini-microservices-store/products/pexels-caleboquendo-7772548.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-caleboquendo-7772548",
+  },
+
+  "Tecno Camon 30": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337978/mini-microservices-store/products/pexels-curayagjovan-4917455.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-curayagjovan-4917455",
+  },
+
+  "MacBook Air M3": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337979/mini-microservices-store/products/pexels-denys-9327162.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-denys-9327162",
+  },
+
+  "Dell XPS 15": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337980/mini-microservices-store/products/pexels-derio-13465232.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-derio-13465232",
+  },
+
+  "HP Pavilion 15": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337981/mini-microservices-store/products/pexels-dhanno-22434759.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-dhanno-22434759",
+  },
+
+  "Lenovo ThinkPad E14": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337983/mini-microservices-store/products/pexels-fox-58267-35285814.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-fox-58267-35285814",
+  },
+
+  "ASUS VivoBook 15": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337985/mini-microservices-store/products/pexels-gasheri-46103936-35666033.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-gasheri-46103936-35666033",
+  },
+
+  "Sony WH-1000XM5": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337986/mini-microservices-store/products/pexels-harveyvillarino-5269699.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-harveyvillarino-5269699",
+  },
+
+  "JBL Flip 6": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337988/mini-microservices-store/products/pexels-joshua-wall-803111889-29617989.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-joshua-wall-803111889-29617989",
+  },
+
+  "Apple AirPods Pro": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337989/mini-microservices-store/products/pexels-karola-g-5202048.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-karola-g-5202048",
+  },
+
+  "Anker Power Bank": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337991/mini-microservices-store/products/pexels-mikhail-nilov-6893890.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-mikhail-nilov-6893890",
+  },
+
+  "Samsung 55-inch Smart TV": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337992/mini-microservices-store/products/pexels-mohammadabbasi-30319668.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-mohammadabbasi-30319668",
+  },
+
+  "Amazon Echo Dot": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337994/mini-microservices-store/products/pexels-phong-thanh-3607237-36680543.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-phong-thanh-3607237-36680543",
+  },
+
+  "Modern Office Chair": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337996/mini-microservices-store/products/pexels-pixabay-273671.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-pixabay-273671",
+  },
+
+  "LED Floor Lamp": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337997/mini-microservices-store/products/pexels-ron-lach-8879615.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-ron-lach-8879615",
+  },
+
+  "Memory Foam Pillow": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337998/mini-microservices-store/products/pexels-ron-lach-8879641.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-ron-lach-8879641",
+  },
+
+  "Queen Size Bedsheet": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791338000/mini-microservices-store/products/pexels-sound-on-3394650.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-sound-on-3394650",
+  },
+
+  "Decorative Wall Mirror": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791338000/mini-microservices-store/products/pexels-zion-14486282.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-zion-14486282",
+  },
+
+  // Reuse uploaded images for the remaining products.
+  "Three-Seater Sofa": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337996/mini-microservices-store/products/pexels-pixabay-273671.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-pixabay-273671",
+  },
+
+  "Classic Denim Jacket": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337997/mini-microservices-store/products/pexels-ron-lach-8879615.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-ron-lach-8879615",
+  },
+
+  "Men's Casual Sneakers": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337998/mini-microservices-store/products/pexels-ron-lach-8879641.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-ron-lach-8879641",
+  },
+
+  "Women's Handbag": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337972/mini-microservices-store/products/pexels-a-darmel-7862350.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-a-darmel-7862350",
+  },
+
+  "Classic Wristwatch": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337973/mini-microservices-store/products/pexels-a-darmel-7862390.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-a-darmel-7862390",
+  },
+
+  "Premium Sunglasses": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337974/mini-microservices-store/products/pexels-airamdphoto-15940010.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-airamdphoto-15940010",
+  },
+
+  "Facial Cleanser": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337976/mini-microservices-store/products/pexels-brunxs-20388126.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-brunxs-20388126",
+  },
+
+  "Vitamin C Serum": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337977/mini-microservices-store/products/pexels-caleboquendo-7772548.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-caleboquendo-7772548",
+  },
+
+  "Moisturizing Body Lotion": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337978/mini-microservices-store/products/pexels-curayagjovan-4917455.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-curayagjovan-4917455",
+  },
+
+  "Perfume Eau de Parfum": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337979/mini-microservices-store/products/pexels-denys-9327162.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-denys-9327162",
+  },
+
+  "Air Fryer": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337980/mini-microservices-store/products/pexels-derio-13465232.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-derio-13465232",
+  },
+
+  "Electric Kettle": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337981/mini-microservices-store/products/pexels-dhanno-22434759.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-dhanno-22434759",
+  },
+
+  "Blender": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337983/mini-microservices-store/products/pexels-fox-58267-35285814.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-fox-58267-35285814",
+  },
+
+  "Rice Cooker": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337985/mini-microservices-store/products/pexels-gasheri-46103936-35666033.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-gasheri-46103936-35666033",
+  },
+
+  "PlayStation 5": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337986/mini-microservices-store/products/pexels-harveyvillarino-5269699.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-harveyvillarino-5269699",
+  },
+
+  "Xbox Series X": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337988/mini-microservices-store/products/pexels-joshua-wall-803111889-29617989.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-joshua-wall-803111889-29617989",
+  },
+
+  "Gaming Headset": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337989/mini-microservices-store/products/pexels-karola-g-5202048.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-karola-g-5202048",
+  },
+
+  "Wireless Gaming Controller": {
+    url: "https://res.cloudinary.com/sp0fqi2q/image/upload/v1791337991/mini-microservices-store/products/pexels-mikhail-nilov-6893890.jpg",
+    publicId:
+      "mini-microservices-store/products/pexels-mikhail-nilov-6893890",
+  },
+};
+
+// =====================================================
 // SEED FUNCTION
 // =====================================================
 
@@ -498,17 +701,17 @@ async function seed() {
     for (const product of products) {
       const categoryId = categoryMap[product.category];
 
-      const image = categoryImages[product.category];
-
+      
       if (!categoryId) {
         throw new Error(
           `Category not found for product: ${product.name}`
         );
       }
-
+    
+      const image = productImages[product.name];
       if (!image) {
         throw new Error(
-          `Image configuration not found for category: ${product.category}`
+          `Image configuration not found for product: ${product.name}`
         );
       }
 

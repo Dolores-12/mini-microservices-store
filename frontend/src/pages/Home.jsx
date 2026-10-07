@@ -1,15 +1,43 @@
-
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { getCategories } from "../services/catalogService";
+
 function Home() {
-  const categories = [
-    { icon: "📱", name: "Electronics" },
-    { icon: "👗", name: "Fashion" },
-    { icon: "🏠", name: "Home & Living" },
-    { icon: "💄", name: "Beauty" },
-    { icon: "🎧", name: "Accessories" },
-    { icon: "🎮", name: "Gaming" },
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const response = await getCategories();
+
+        const categoryList = Array.isArray(response)
+          ? response
+          : response?.categories ||
+            response?.data?.categories ||
+            response?.data ||
+            [];
+
+        setCategories(categoryList);
+      } catch (error) {
+        console.error("Unable to load categories:", error);
+      }
+    }
+
+    loadCategories();
+  }, []);
+
+  const categoryIcons = {
+    Electronics: "📱",
+    Fashion: "👗",
+    "Home & Living": "🏠",
+    Beauty: "💄",
+    Accessories: "🎧",
+    Gaming: "🎮",
+    Smartphones: "📱",
+    Laptops: "💻",
+    Kitchen: "🍳",
+  };
 
   const deals = [
     {
@@ -48,11 +76,11 @@ function Home() {
           </p>
 
           <div className="hero-actions">
-            <Link to="/catalog" className="hero-button">
+            <Link to="/products" className="hero-button">
               Shop Now
             </Link>
 
-            <Link to="/catalog" className="hero-secondary">
+            <Link to="/products" className="hero-secondary">
               Explore Deals →
             </Link>
           </div>
@@ -135,21 +163,21 @@ function Home() {
             <h2>Shop by Category</h2>
           </div>
 
-          <Link to="/catalog">View All →</Link>
+          <Link to="/products">View All →</Link>
         </div>
 
-        <div className="category-grid">
+        <div className="categories-grid">
           {categories.map((category) => (
             <Link
-              to="/catalog"
+              key={category._id}
+              to={`/products?category=${encodeURIComponent(category._id)}`}
               className="category-card"
-              key={category.name}
             >
-              <span className="category-icon">{category.icon}</span>
+              <span>
+                {categoryIcons[category.name] || "🛍️"}
+              </span>
 
               <strong>{category.name}</strong>
-
-              <span>Shop now →</span>
             </Link>
           ))}
         </div>
@@ -163,13 +191,13 @@ function Home() {
             <h2>Today's Highlights</h2>
           </div>
 
-          <Link to="/catalog">See More →</Link>
+          <Link to="/products">See More →</Link>
         </div>
 
         <div className="deal-grid">
           {deals.map((deal) => (
             <Link
-              to="/catalog"
+              to="/products"
               className="deal-card"
               key={deal.title}
             >
@@ -199,7 +227,7 @@ function Home() {
           </p>
         </div>
 
-        <Link to="/catalog" className="cta-button">
+        <Link to="/products" className="cta-button">
           Start Shopping →
         </Link>
       </section>
