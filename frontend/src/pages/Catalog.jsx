@@ -213,61 +213,78 @@ function Catalog() {
    * Cart message
    */
   const handleAddToCart = (product) => {
-    const stockValue =
-      product.stock ??
-      product.quantity ??
-      product.inventory;
+  if (!product || !product._id) {
+    setCartMessage("Unable to add this product. Please try again.");
+    return;
+  }
 
-    const stock =
-      stockValue == null ? null : Number(stockValue);
+  // Check available stock if the product has a stock field.
+  const stockValue =
+    product.stock ??
+    product.quantity ??
+    product.inventory;
 
-    if (stock !== null && Number.isFinite(stock) && stock <= 0) {
-      setCartMessage(`${product.name} is out of stock.`);
-      return;
+  const stock =
+    stockValue == null ? null : Number(stockValue);
+
+  if (stock !== null && Number.isFinite(stock) && stock <= 0) {
+    setCartMessage(`${product.name} is out of stock.`);
+    return;
+  }
+
+  // Read the same cart key used by Cart.jsx.
+  let cart = [];
+
+  try {
+    const savedCart = localStorage.getItem("store_cart");
+    cart = savedCart ? JSON.parse(savedCart) : [];
+
+    if (!Array.isArray(cart)) {
+      cart = [];
     }
+  } catch (error) {
+    console.error("Unable to read cart:", error);
+    setCartMessage("Unable to read your cart. Please try again.");
+    return;
+  }
 
-    let cart = [];
+  // Check whether this product is already in the cart.
+  const existingItem = cart.find(
+    (item) => item._id === product._id
+  );
 
-    try {
-      const savedCart = localStorage.getItem("store_cart");
-      cart = savedCart ? JSON.parse(savedCart) : [];
+  const currentQuantity = Number(existingItem?.quantity || 0);
 
-      if (!Array.isArray(cart)) {
-        cart = [];
-      }
-    } catch {
-      setCartMessage("Unable to read your cart. Please try again.");
-      return;
-    }
-
-    const existingItem = cart.find(
-      (item) => item._id === product._id
+  if (
+    stock !== null &&
+    Number.isFinite(stock) &&
+    currentQuantity + 1 > stock
+  ) {
+    setCartMessage(
+      `Only ${stock} unit(s) of ${product.name} are available.`
     );
+    return;
+  }
 
-    const currentQuantity = Number(existingItem?.quantity || 0);
+  // Increase the quantity or add a new item.
+  const updatedCart = existingItem
+    ? cart.map((item) =>
+        item._id === product._id
+          ? { ...item, quantity: currentQuantity + 1 }
+          : item
+      )
+    : [...cart, { ...product, quantity: 1 }];
 
-    if (
-      stock !== null &&
-      Number.isFinite(stock) &&
-      currentQuantity + 1 > stock
-    ) {
-      setCartMessage(`Only ${stock} unit(s) of ${product.name} are available.`);
-      return;
-    }
-
-    const updatedCart = existingItem
-      ? cart.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: currentQuantity + 1 }
-            : item
-        )
-      : [...cart, { ...product, quantity: 1 }];
-
+  try {
     localStorage.setItem("store_cart", JSON.stringify(updatedCart));
-
     setCartMessage(`${product.name} has been added to your cart.`);
-  };
+  } catch (error) {
+    console.error("Unable to save cart:", error);
+    setCartMessage("Unable to save your cart. Please try again.");
+  }
+};
 
+    
   return (
     <main className="catalog-page">
       <div className="catalog-container">
