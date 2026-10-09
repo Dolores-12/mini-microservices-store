@@ -39,8 +39,28 @@ app.use(
   createProxyMiddleware({
     target: services.catalog,
     changeOrigin: true,
+
     pathRewrite: {
       "^/api/catalog": "",
+    },
+
+    on: {
+      error: (err, req, res) => {
+        console.error("========== CATALOG PROXY ERROR ==========");
+        console.error("Error code:", err.code);
+        console.error("Error message:", err.message);
+        console.error("Catalog target:", services.catalog);
+        console.error("Request URL:", req.originalUrl);
+        console.error("=========================================");
+
+        if (!res.headersSent) {
+          res.status(502).json({
+            success: false,
+            message: "Catalog service unavailable",
+            error: err.message,
+          });
+        }
+      },
     },
   })
 );
