@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../services/authService";
@@ -5,17 +6,19 @@ import { registerUser } from "../services/authService";
 function Register() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setError("");
     setSuccess("");
 
@@ -28,15 +31,13 @@ function Register() {
 
     try {
       await registerUser({
-        name,
-        email,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
         password,
-        role: "CUSTOMER",
       });
 
-      setSuccess(
-        "Account created successfully. Redirecting to login..."
-      );
+      setSuccess("Account created successfully. Redirecting to login...");
 
       setTimeout(() => {
         navigate("/login");
@@ -51,12 +52,10 @@ function Register() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <div className="auth-brand">🛒</div>
+        <div className="auth-brand" aria-hidden="true">🛒</div>
 
         <span className="section-kicker">JOIN MINISTORE</span>
-
         <h1>Create your account</h1>
-
         <p className="auth-subtitle">
           Create a customer account and start shopping.
         </p>
@@ -75,13 +74,27 @@ function Register() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-field">
-            <label htmlFor="name">Full name</label>
+            <label htmlFor="first-name">First name</label>
             <input
-              id="name"
+              id="first-name"
               type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
+              autoComplete="given-name"
+              placeholder="Your first name"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="last-name">Last name</label>
+            <input
+              id="last-name"
+              type="text"
+              autoComplete="family-name"
+              placeholder="Your last name"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
               required
             />
           </div>
@@ -91,6 +104,7 @@ function Register() {
             <input
               id="register-email"
               type="email"
+              autoComplete="email"
               placeholder="you@example.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -100,36 +114,58 @@ function Register() {
 
           <div className="form-field">
             <label htmlFor="register-password">Password</label>
-            <input
-              id="register-password"
-              type="password"
-              placeholder="Create a password"
-              value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
-              required
-            />
+            <div className="password-input-wrapper">
+              <input
+                id="register-password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Create a password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
 
           <div className="form-field">
-            <label htmlFor="confirm-password">
-              Confirm password
-            </label>
-            <input
-              id="confirm-password"
-              type="password"
-              placeholder="Repeat your password"
-              value={confirmPassword}
-              onChange={(event) =>
-                setConfirmPassword(event.target.value)
-              }
-              required
-            />
+            <label htmlFor="confirm-password">Confirm password</label>
+            <div className="password-input-wrapper">
+              <input
+                id="confirm-password"
+                type={showConfirmPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Repeat your password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowConfirmPassword((visible) => !visible)
+                }
+                aria-label={
+                  showConfirmPassword
+                    ? "Hide confirmation password"
+                    : "Show confirmation password"
+                }
+              >
+                {showConfirmPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
 
           <div className="account-type">
-            <span>👤</span>
+            <span aria-hidden="true">👤</span>
             <div>
               <strong>Customer account</strong>
               <small>Shop products and manage your orders</small>
@@ -141,13 +177,12 @@ function Register() {
             className="auth-submit"
             disabled={loading}
           >
-            {loading ? "Creating Account..." : "Create Account"}
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
 
         <p className="auth-footer">
-          Already have an account?{" "}
-          <Link to="/login">Sign in</Link>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </section>
     </main>
