@@ -197,7 +197,7 @@ function Home() {
         <div className="deal-grid">
           {deals.map((deal) => (
             <Link
-              to="/products"
+              to="/catalog"
               className="deal-card"
               key={deal.title}
             >
@@ -227,7 +227,7 @@ function Home() {
           </p>
         </div>
 
-        <Link to="/products" className="cta-button">
+        <Link to="/catalog" className="cta-button">
           Start Shopping →
         </Link>
       </section>

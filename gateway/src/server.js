@@ -40,6 +40,7 @@ app.use(
   createProxyMiddleware({
     target: services.catalog,
     changeOrigin: true,
+
     pathRewrite: {
       "^/api/catalog": "",
     },
