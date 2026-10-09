@@ -76,11 +76,11 @@ function Home() {
           </p>
 
           <div className="hero-actions">
-            <Link to="/products" className="hero-button">
+            <Link to="/catalog" className="hero-button">
               Shop Now
             </Link>
 
-            <Link to="/products" className="hero-secondary">
+            <Link to="/catalog" className="hero-secondary">
               Explore Deals →
             </Link>
           </div>
@@ -163,14 +163,14 @@ function Home() {
             <h2>Shop by Category</h2>
           </div>
 
-          <Link to="/products">View All →</Link>
+          <Link to="/catalog">View All →</Link>
         </div>
 
         <div className="categories-grid">
           {categories.map((category) => (
             <Link
               key={category._id}
-              to={`/products?category=${encodeURIComponent(category._id)}`}
+              to={`/catalog?category=${encodeURIComponent(category._id)}`}
               className="category-card"
             >
               <span>
@@ -191,7 +191,7 @@ function Home() {
             <h2>Today's Highlights</h2>
           </div>
 
-          <Link to="/products">See More →</Link>
+          <Link to="/catalog">See More →</Link>
         </div>
 
         <div className="deal-grid">
