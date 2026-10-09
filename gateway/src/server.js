@@ -2,7 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const {
+  createProxyMiddleware,
+  fixRequestBody,
+} = require("http-proxy-middleware");
 
 const services = require("./config/services");
 const logger = require("./middleware/logger");
@@ -30,6 +33,34 @@ app.use(
   createProxyMiddleware({
     target: services.auth,
     changeOrigin: true,
+
+    // The Auth Service expects /auth/register and /auth/login.
+    // Express removes /api/auth when mounting this middleware,
+    // so restore the /auth prefix before forwarding.
+    pathRewrite: {
+      "^/": "/auth/",
+    },
+
+    // Forward JSON request bodies parsed by express.json().
+    on: {
+      proxyReq: fixRequestBody,
+
+      error: (err, req, res) => {
+        console.error("========== AUTH PROXY ERROR ==========");
+        console.error("Error code:", err.code);
+        console.error("Error message:", err.message);
+        console.error("Auth target:", services.auth);
+        console.error("Request URL:", req.originalUrl);
+        console.error("======================================");
+
+        if (!res.headersSent) {
+          res.status(502).json({
+            success: false,
+            message: "Auth service unavailable",
+          });
+        }
+      },
+    },
   })
 );
 
