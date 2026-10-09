@@ -33,7 +33,8 @@ app.use(
   })
 );
 
-// Catalog Service
+
+ // Catalog Service
 app.use(
   "/api/catalog",
   createProxyMiddleware({
@@ -43,7 +44,6 @@ app.use(
     pathRewrite: {
       "^/api/catalog": "",
     },
-
     on: {
       error: (err, req, res) => {
         console.error("========== CATALOG PROXY ERROR ==========");
