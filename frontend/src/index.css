@@ -3172,3 +3172,24 @@ input::placeholder {
   outline-offset: 2px;
   border-radius: 4px;
 }
+/* Add-to-cart click-target fix */
+.product-info {
+  position: relative;
+  z-index: 2;
+}
+
+.product-bottom {
+  position: relative;
+  z-index: 3;
+}
+
+.product-bottom .add-to-cart {
+  position: relative;
+  z-index: 4;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.product-bottom .add-to-cart:disabled {
+  cursor: not-allowed;
+}

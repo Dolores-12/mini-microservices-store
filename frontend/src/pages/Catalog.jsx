@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   getCategories,
@@ -507,7 +507,7 @@ function Catalog() {
                       )
                     }
                   >
-                    ← Previous
+                    â† Previous
                   </button>
 
                   <div className="pagination-pages">
@@ -542,7 +542,7 @@ function Catalog() {
                       )
                     }
                   >
-                    Next →
+                    Next â†’
                   </button>
                 </nav>
               )}
@@ -554,3 +554,4 @@ function Catalog() {
 }
 
 export default Catalog;
+
